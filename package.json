@@ -5,14 +5,17 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "apk":"cd android && ./gradlew clean && ./gradlew assembleRelease"
+    "ios": "react-native run-ios",
+    "android": "react-native run-android",
+    "apk": "cd android && ./gradlew clean && ./gradlew assembleRelease"
   },
   "dependencies": {
     "react": "16.3.1",
     "react-native": "0.54.2",
     "react-native-fs": "^2.9.12",
-    "teaset": "^0.5.8",
-    "react-navigation": "^1.5.11"
+    "react-native-vector-icons": "^4.6.0",
+    "react-navigation": "^1.1.471",
+    "teaset": "^0.5.8"
   },
   "devDependencies": {
     "babel-jest": "23.0.1",
