@@ -10,9 +10,11 @@
     "apk": "cd android && ./gradlew clean && ./gradlew assembleRelease"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "react": "16.3.1",
     "react-native": "0.54.2",
     "react-native-fs": "^2.9.12",
+    "react-native-swiper": "^1.5.13",
     "react-native-vector-icons": "^4.6.0",
     "react-navigation": "^1.1.471",
     "teaset": "^0.5.8"
