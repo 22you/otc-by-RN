@@ -27,13 +27,30 @@ import Swiper from 'react-native-swiper'
         'Banana',
         'Cherry',
         'Durian',],
-        activeIndex:'',
-        transactionMode:'',
+        activeIndex:0,
+        transactionMode:1,
         coinInfo:[],
         coinCode:''
        }
       }
+      async componentDidMount(){
+        //查询币种信息
+        let checkCoins=config.baseUrl+config.api.coinType;
+        await axios(checkCoins)
+        .then((res)=>{
+            if(res.data.success){
+                this.setState({
+                coinInfo:res.data.obj,
+                coinCode:res.data.obj[0].coinCode 
+                })
+            }
+        
+
+        })
+      }
       componentDidMount(){
+          console.log('coinCode',this.state.coinCode);
+          
           //首页中的banner查询
           let bannerUrl=config.baseUrl+config.api.banner;
           axios.get(bannerUrl)
@@ -64,23 +81,12 @@ import Swiper from 'react-native-swiper'
            console.log(err);
            
           })
-          //查询币种信息
-          let checkCoins=config.baseUrl+config.api.coinType;
-          axios(checkCoins)
-          .then((res)=>{
-              if(res.data.success){
-                  this.setState({
-                    coinInfo:res.data.obj  
-                  })
-              }
-            
-
-          })
+         
           //查询广告大厅的详细内容
-          let adHallDetail=config.baseUrl+config.advertisement.adHallDetail+'transactionMode='+this.state.transactionMode+'&page=1'+'&coinCode=LTC';
+          let adHallDetail=config.baseUrl+config.advertisement.adHallDetail+'transactionMode='+this.state.transactionMode+'&page=1'+'&coinCode='+this.state.coinCode;
           axios.get(adHallDetail)
           .then((res)=>{
-            console.log(res.data,adHallDetail);
+            console.log(res.data,res.data,adHallDetail);
 
           })
       }
@@ -101,8 +107,7 @@ import Swiper from 'react-native-swiper'
         }
       }
       render(){
-        const {banners,newNotice,barItems,activeIndex,coinInfo}=this.state;
-        console.log(coinInfo);
+        const {banners,newNotice,barItems,activeIndex,coinInfo,coinCode}=this.state;
         
         const bannerlist=banners.length?
         banners.map((item,index)=>(
@@ -159,19 +164,19 @@ import Swiper from 'react-native-swiper'
                   <Carousel
                     style={{backgroundColor:'#fff', minHeight: 238}}
                     carousel={false}
-                    startIndex={`activeIndex`}
+                    startIndex={activeIndex}
                     cycle={false}
                     ref='carousel'
                     onChange={index => this.onCarouselChange(index)}
                     >
                     {barItems.map((item, index) => (
-                        <View style={base.coinDetailItem}>
+                        <View style={base.coinDetailItem} key={index}>
                            <Image></Image>
                            <View style={base.coinItemC}>
                                <View style={base.coinItemChea}>
                                   <Text style={base.coinUserName}>qiaowei</Text>
-                                  <Text style={base.bankTag}>银行卡转账</Text>
-                                  <Text style={base.alipayTag}>zhifubao</Text>
+                                  <View style={base.bankTag}><Text style={base.TagTxt}>银行卡转账</Text></View>
+                                  <View style={base.alipayTag}><Text style={base.TagTxt}>支付宝</Text></View>
                                </View>
                                <View style={base.coinItemMid}>
                                 <Text style={{marginRight:matchsize(15)}}>交易 256</Text>
@@ -203,8 +208,6 @@ import Swiper from 'react-native-swiper'
     },
     coinItemMid:{
         flexDirection:'row',
-        fontSize:matchsize(24),
-        color:'#666666'
     },
     coinDetailItem:{
         borderTopWidth:1,
@@ -248,27 +251,27 @@ import Swiper from 'react-native-swiper'
     },
     bankTag:{
         backgroundColor:'red',
-        color:'#fff',
-        fontSize:matchsize(18),
-        paddingHorizontal:matchsize(5),
+        paddingHorizontal:matchsize(10),
         borderRadius:10,
         marginLeft:matchsize(20),
         flexDirection:'row',
         alignItems:'center',
-        height:matchsize(30)
-
+        height:matchsize(30),
     },
+    
     alipayTag:{
         backgroundColor:'#25a2f7',
-        color:'#fff',
-        fontSize:matchsize(18),
-        paddingHorizontal:matchsize(5),
+        paddingHorizontal:matchsize(10),
         borderRadius:10,
         marginLeft:matchsize(20),
         flexDirection:'row',
         alignItems:'center',
-        height:matchsize(30)
+        height:matchsize(30),
 
         
-    }
+    },
+    TagTxt:{
+        color:'#fff',
+        fontSize:matchsize(20),
+    },
     })

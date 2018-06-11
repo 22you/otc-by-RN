@@ -9,7 +9,7 @@ export default class Login extends Component{
  }
  render(){
      return(
-         <Text/>
+         <Text>登陆</Text>
      )
  }
 
